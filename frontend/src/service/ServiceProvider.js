@@ -12,7 +12,7 @@ const ServiceProvider = ({ children }) => {
 
     // search 
 
-    const [search,setSearch]=useState("")
+    const [search, setSearch] = useState("")
 
     // books
     const [book, setBooks] = useState([])
@@ -34,8 +34,8 @@ const ServiceProvider = ({ children }) => {
     const onAddBook = async () => {
         console.log(author)
         try {
-           await axios.post(`${port}post`, { title: title, author: author, publishedYear: publishedYear })
-           
+            await axios.post(`${port}post`, { title: title, author: author, publishedYear: publishedYear })
+
             setAuthor("")
             setTitle("")
             setPublishedYear("")
@@ -53,7 +53,7 @@ const ServiceProvider = ({ children }) => {
     const onEdit = async (e) => {
 
         try {
-           await axios.put(`${port}post/${e._id}`, { title: editTitle, author: editAuthor, publishedYear: editPublishYear })
+            await axios.put(`${port}post/${e._id}`, { title: editTitle, author: editAuthor, publishedYear: editPublishYear })
             setEditTitle("")
             setEditAuthor("")
             setEditPublishYear("")
@@ -72,32 +72,46 @@ const ServiceProvider = ({ children }) => {
         try {
             await axios.delete(`${port}post/${s._id}`)
 
-           const updateBooks=book.filter(e=>
-            e._id!==s._id
+            const updateBooks = book.filter(e =>
+                e._id !== s._id
 
 
-           )
-           setBooks(updateBooks)
+            )
+            setBooks(updateBooks)
 
 
         } catch (e) {
             console.log(e.message)
         } finally {
-            
+
         }
 
-       
+
 
     }
 
 
     // search 
 
-    const onSearch = () => {
-         book.filter(e => e.title.includes(search));
-        // setBooks(response)
+
+
+    const onSearch = (res) => {
+        setSearch(res)
+        console.log(search)
+        const dumy = [...book]
+        console.log(dumy)
+      
+
+
+        if (res !== "") {
+
+            const ser = dumy.filter(e => e.title.includes(res));
+            setBooks(ser)
+        } else {
+            setBooks(dumy)
+        }
     }
-    
+
 
 
     // lode all book
@@ -115,7 +129,7 @@ const ServiceProvider = ({ children }) => {
         }
         allBook()
 
-    }, [refress,port])
+    }, [refress, port])
 
 
 
@@ -136,7 +150,7 @@ const ServiceProvider = ({ children }) => {
             editTitle, setEditTitle, editAuthor, setEditAuthor, editPublishYear, setEditPublishYear, onEdit, onDelete
 
             // search 
-            ,search,setSearch,onSearch
+            , search, setSearch, onSearch
 
         }}>
             {children}
